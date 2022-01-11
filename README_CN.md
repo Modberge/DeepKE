@@ -20,18 +20,36 @@
     <p>基于深度学习的开源中文知识图谱抽取框架</p>
 </h1>
 
-DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。
+DeepKE 是一个支持<b>低资源、长篇章</b>的知识抽取工具，可以基于<b>PyTorch</b>实现<b>命名实体识别</b>、<b>关系抽取</b>和<b>属性抽取</b>功能。同时为初学者提供了详尽的[文档](https://zjunlp.github.io/DeepKE/)，[Google Colab教程](https://colab.research.google.com/drive/1vS8YJhJltzw3hpJczPt24O0Azcs3ZpRi?usp=sharing)和[在线演示](http://deepke.zjukg.cn/)。
 
 <br>
 
+# 新版特性
 
-### 进行预测
+## 2021年1月
+
+- 发布论文[DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
+
+## 2021年12月
+- 加入`dockerfile`以便自动创建环境
+## 2021年11月
+- 发布DeepKE demo页面，支持实时抽取，无需部署和训练模型
+- 发布DeepKE文档，包含DeepKE源码和数据集等详细信息
+## 2021年10月
+- `pip install deepke`
+- deepke-v2.0发布
+## 2021年5月
+- `pip install deepke`
+- deepke-v1.0发布
+<br>
+
+# 进行预测
 下面使用一个demo展示预测过程<br>
 <img src="pics/demo.gif" width="636" height="494" align=center>
 
 <br>
 
-## 模型架构
+# 模型架构
 
 Deepke的架构图如下所示
 
@@ -39,17 +57,20 @@ Deepke的架构图如下所示
     <img src="pics/architectures.png">
 </h3>
 
-DeepKE包括了三个模块，可以进行命名实体识别、关系抽取以及属性抽取任务，在各个模块下包括各自的子模块。其中关系抽取模块就有常规模块、文档级抽取模块以及低资源少样本模块。在每一个子模块中，包含实现分词、预处理等功能的一个工具集合，以及编码、训练和预测部分。
+- DeepKE为三个知识抽取功能（命名实体识别、关系抽取和属性抽取）设计了一个统一的框架
+- 可以在不同场景下实现不同功能。比如，可以在标准全监督、低资源少样本和文档级设定下进行关系抽取
+- 每一个应用场景由三个部分组成：Data部分包含Tokenizer、Preprocessor和Loader，Model部分包含Module、Encoder和Forwarder，Core部分包含Training、Evaluation和Prediction
+
 
 <br>
 
-## 快速上手
+# 快速上手
 
-DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下五个步骤就可以实现一个常规关系抽取模型
+DeepKE支持pip安装使用，以常规全监督设定关系抽取为例，经过以下6个步骤就可以实现一个常规关系抽取模型
 
 **Step 1**：下载代码 ```git clone https://github.com/zjunlp/DeepKE.git```（别忘记star和fork哈！！！）
 
-**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境(提供Dockerfile源码可自行创建镜像，位于docker文件夹中)
+**Step 2**：使用anaconda创建虚拟环境，进入虚拟环境（提供Dockerfile源码可自行创建镜像，位于docker文件夹中）
 
 ```
 conda create -n deepke python=3.8
@@ -76,14 +97,24 @@ python setup.py develop
 cd DeepKE/example/re/standard
 ```
 
-**Step 4** ：模型训练，训练用到的参数可在conf文件夹内修改
+**Step 4**：下载数据集
+```
+wget 120.27.214.45/Data/re/standard/data.tar.gz
+
+tar -xzvf data.tar.gz
+```
+
+**Step 5** ：模型训练，训练用到的参数可在conf文件夹内修改
+
+DeepKE使用*wandb*支持可视化调参
 
 ```
 python run.py
 ```
 
-**Step 5** ：模型预测。预测用到的参数可在conf文件夹内修改
+**Step 6** ：模型预测。预测用到的参数可在conf文件夹内修改
 
+修改`conf/predict.yaml`中保存训练好的模型路径。
 ```
 python predict.py
 ```
@@ -261,13 +292,13 @@ python predict.py
   |                           Sentence                           |   Att    |   Ent    | Ent_offset |      Val      | Val_offset |
   | :----------------------------------------------------------: | :------: | :------: | :--------: | :-----------: | :--------: |
   |          张冬梅，女，汉族，1968年2月生，河南淇县人           |   民族   |  张冬梅  |     0      |     汉族      |     6      |
-  | 杨缨，字绵公，号钓溪，松溪县人，祖籍将乐，是北宋理学家杨时的七世孙 |   朝代   |   杨缨   |     0      |     北宋      |     22     |
+  | 诸葛亮，字孔明，三国时期杰出的军事家、文学家、发明家。 |   朝代   |   诸葛亮   |     0      |     三国时期      |     8     |
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - 具体流程请进入详细的README中
   - **[常规全监督STANDARD](https://github.com/zjunlp/DeepKE/tree/main/example/ae/standard)**  
     
-    **Step1**：进入`DeepKE/example/re/standard`，下载数据集
+    **Step1**：进入`DeepKE/example/ae/standard`，下载数据集
     
     ```bash
     wget 120.27.214.45/Data/ae/standard/data.tar.gz
@@ -297,33 +328,33 @@ python predict.py
 
 - 常规设定：
 
-    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
+    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/standard_ner_tutorial.ipynb)
 
     [命名实体识别Colab](https://colab.research.google.com/drive/1rFiIcDNgpC002q9BbtY_wkeBUvbqVxpg?usp=sharing)
     
-    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/standard_re_BERT_tutorial.ipynb)
 
     [关系抽取Colab](https://colab.research.google.com/drive/1o6rKIxBqrGZNnA2IMXqiSsY2GWANAZLl?usp=sharing)
    
-    [属性抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/tutorial.ipynb)
+    [属性抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/standard_ae_tutorial.ipynb)
 
     [属性抽取Colab](https://colab.research.google.com/drive/1pgPouEtHMR7L9Z-QfG1sPYkJfrtRt8ML?usp=sharing)
 
 - 低资源：
 
-    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/tutorial.ipynb)
+    [命名实体识别Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/fewshot_ner_tutorial.ipynb)
 
     [命名实体识别Colab](https://colab.research.google.com/drive/1Xz0sNpYQNbkjhebCG5djrwM8Mj2Crj7F?usp=sharing)
 
-    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/fewshot_re_tutorial.ipynb)
     
-    [关系抽取Colab]()
+    [关系抽取Colab](https://colab.research.google.com/drive/1o1ly6ORgerkm1fCDjEQb7hsN5WKyg3JH?usp=sharing)
     
 - 篇章级：
 
-    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
-
-    [关系抽取Colab]()
+    [关系抽取Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/document_re_tutorial.ipynb)
+    
+    [关系抽取Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
 
 
 <!-- ![image](https://user-images.githubusercontent.com/31753427/140022588-c3b38495-89b1-4f3c-8298-bcc1086f78bf.png) -->
@@ -342,5 +373,5 @@ python predict.py
 
 浙江大学：张宁豫、陶联宽、余海洋、陈想、徐欣、田玺、李磊、黎洲波、邓淑敏、姚云志、叶宏彬、谢辛、郑国轴、陈华钧
 
-达摩院：谭传奇、陈漠沙、黄非
+达摩院：张珍茹、谭传奇、黄非
 

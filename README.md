@@ -2,8 +2,8 @@
     <a href="https://github.com/zjunlp/deepke"> <img src="pics/logo.png" width="400"/></a>
 <p>
 <p align="center">  
-    <a href="https://deepke.openkg.cn">
-        <img alt="Documentation" src="https://img.shields.io/badge/DeepKE-website-green">
+    <a href="http://deepke.zjukg.cn">
+        <img alt="Documentation" src="https://img.shields.io/badge/demo-website-blue">
     </a>
     <a href="https://pypi.org/project/deepke/#files">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/deepke">
@@ -11,9 +11,13 @@
     <a href="https://github.com/zjunlp/DeepKE/blob/master/LICENSE">
         <img alt="GitHub" src="https://img.shields.io/github/license/zjunlp/deepke">
     </a>
+    <a href="http://zjunlp.github.io/DeepKE">
+        <img alt="Documentation" src="https://img.shields.io/badge/doc-website-red">
+    </a>
+
 </p>
 <p align="center">
-    <b><a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> | English</b>
+    <b> English | <a href="https://github.com/zjunlp/DeepKE/blob/main/README_CN.md">简体中文</a> </b>
 </p>
 
 <h1 align="center">
@@ -21,9 +25,24 @@
 </h1>
 
 
-DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios. It provides three functions based on **PyTorch**, including **Named Entity Recognition**, **Relation Extraciton** and **Attribute Extraction**.
+DeepKE is a knowledge extraction toolkit supporting **low-resource** and **document-level** scenarios for *entity*, *relation* and *attribute* extraction. We provide [comprehensive documents](https://zjunlp.github.io/DeepKE/), [Google Colab tutorials](), and [online demo](http://deepke.zjukg.cn/) for beginners.
 
 <br>
+
+# What's New
+
+## Jan, 2022
+* We have released a paper [DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population](https://arxiv.org/abs/2201.03335)
+## Dec, 2021
+* We have added `dockerfile` to create the enviroment automatically. 
+## Nov, 2021
+* The demo of DeepKE, supporting real-time extration without deploying and training, has been released.
+* The documentation of DeepKE, containing the details of DeepKE such as source codes and datasets, has been released.
+## Oct, 2021
+* `pip install deepke`
+* The codes of deepke-v2.0 have been released.
+## August, 2020
+* The codes of deepke-v1.0 have been released.
 
 # Prediction
 
@@ -37,9 +56,7 @@ There is a demonstration of prediction.<br>
 <h3 align="center">
     <img src="pics/architectures.png">
 </h3>
-<p align="center">
-    Figure 1: The framework of DeepKE
-</p>
+
 
 - DeepKE contains a unified framework for **named entity recognition**, **relation extraction** and **attribute extraction**, the three  knowledge extraction functions.
 - Each task can be implemented in different scenarios. For example, we can achieve relation extraction in **standard**, **low-resource (few-shot)** and **document-level** settings.
@@ -49,9 +66,9 @@ There is a demonstration of prediction.<br>
 
 # Quickstart
 
-*DeepKE* is supported `pip install deepke`. Take the fully supervised relation extraction for example. <br>(Please star✨ and fork :memo: !!!)
+*DeepKE* supports `pip install deepke`. <br>Take the fully supervised relation extraction for example.
 
-**Step1** Download the basic codes
+**Step1** Download the basic code
 
 ```bash
 git clone https://github.com/zjunlp/DeepKE.git
@@ -59,7 +76,7 @@ git clone https://github.com/zjunlp/DeepKE.git
 
 **Step2** Create a virtual environment using `Anaconda` and enter it.<br>
 
-We also provide dockerfile source code, you can create your own image, which is located in the `docker` folder.
+We also provide dockerfile source code, which is located in the `docker` folder, to help users create their own mirrors.
 
 ```bash
 conda create -n deepke python=3.8
@@ -67,19 +84,20 @@ conda create -n deepke python=3.8
 conda activate deepke
 ```
 
-1. Install *DeepKE* with `pip`
-
-   ```bash
-   pip install deepke
-   ```
-
-2. Install *DeepKE* with source codes
+1. Install *DeepKE* with source code
 
    ```bash
    python setup.py install
    
    python setup.py develop
    ```
+
+2. Install *DeepKE* with `pip`
+
+   ```bash
+   pip install deepke
+   ```
+   
 
 **Step3** Enter the task directory
 
@@ -97,13 +115,15 @@ tar -xzvf data.tar.gz
 
 **Step5** Training (Parameters for training can be changed in the `conf` folder)
 
-We support visual parameter tuning using *wandb*
+We support visual parameter tuning by using *wandb*.
 
 ```bash
 python run.py
 ```
 
 **Step6** Prediction (Parameters for prediction can be changed in the `conf` folder)
+
+Modify the path of the trained model in `predict.yaml`.
 
 ```bash
 python predict.py
@@ -293,7 +313,7 @@ python predict.py
   |                           Sentence                           |   Att    |   Ent    | Ent_offset |      Val      | Val_offset |
   | :----------------------------------------------------------: | :------: | :------: | :--------: | :-----------: | :--------: |
   |          张冬梅，女，汉族，1968年2月生，河南淇县人           |   民族   |  张冬梅  |     0      |     汉族      |     6      |
-  | 杨缨，字绵公，号钓溪，松溪县人，祖籍将乐，是北宋理学家杨时的七世孙 |   朝代   |   杨缨   |     0      |     北宋      |     22     |
+  |诸葛亮，字孔明，三国时期杰出的军事家、文学家、发明家。|   朝代   |   诸葛亮   |     0      |     三国时期      |     8     |
   |        2014年10月1日许鞍华执导的电影《黄金时代》上映         | 上映时间 | 黄金时代 |     19     | 2014年10月1日 |     0      |
 
 - Read the detailed process in specific README
@@ -329,31 +349,35 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 
 - Standard Setting<br>
 
-  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/tutorial.ipynb)
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/standard/standard_ner_tutorial.ipynb)
 
-  [NER Colab](https://colab.research.google.com/drive/1KpJFAT1nZfGDfnuNMZn02_okIU08j46d?usp=sharing)
+  [NER Colab](https://colab.research.google.com/drive/1h4k6-_oNEHBRxrnzpxHPczO5SFaLS9uq?usp=sharing)
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/tutorial.ipynb)
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/standard/standard_re_pcnn_tutorial.ipynb)
 
   [RE Colab](https://colab.research.google.com/drive/1o6rKIxBqrGZNnA2IMXqiSsY2GWANAZLl?usp=sharing)
 
-  [AE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/tutorial.ipynb)
+  [AE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ae/standard/standard_ae_tutorial.ipynb)
 
   [AE Colab](https://colab.research.google.com/drive/1pgPouEtHMR7L9Z-QfG1sPYkJfrtRt8ML)
 
 - Low-resource<br>
 
-  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/tutorial.ipynb)
+  [NER Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/ner/few-shot/fewshot_ner_tutorial.ipynb)
 
   [NER Colab](https://colab.research.google.com/drive/1Xz0sNpYQNbkjhebCG5djrwM8Mj2Crj7F?usp=sharing)
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/tutorial.ipynb)
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/few-shot/fewshot_re_tutorial.ipynb)
+  
+  [RE Colab](https://colab.research.google.com/drive/1o1ly6ORgerkm1fCDjEQb7hsN5WKyg3JH?usp=sharing)
 
 
 - Document-level<br>
 
-  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/tutorial.ipynb)
+  [RE Notebook](https://github.com/zjunlp/DeepKE/blob/main/tutorial-notebooks/re/document/document_re_tutorial.ipynb)
 
+  [RE Colab](https://colab.research.google.com/drive/1RGUBbbOBHlWJ1NXQLtP_YEUktntHtROa?usp=sharing)
+  
 
 <br>
 
@@ -364,11 +388,28 @@ This toolkit provides many `Jupyter Notebook` and `Google Colab` tutorials. User
 3. When encountering `ModuleNotFoundError: No module named 'past'`，run `pip install future` .
 4. It's slow to install the pretrained language models online. Recommend download pretrained models before use and save them in the `pretrained` folder. Read `README.md` in every task directory to check the specific requirement for saving pretrained models.
 5. The old version of *DeepKE* is in the [deepke-v1.0](https://github.com/zjunlp/DeepKE/tree/deepke-v1.0) branch. Users can change the branch to use the old version. The old version has been totally transfered to the standard relation extraction ([example/re/standard](https://github.com/zjunlp/DeepKE/blob/main/example/re/standard/README.md)).
+6. It's recommended to install *DeepKE* with source codes. Because user may meet some problems in Windows system with 'pip'.
 
 <br>
 
+# To do
+In next version, we plan to add multi-modality knowledge extraction to the toolkit. 
+
+Meanwhile, we will offer long-term maintenance to fix bugs, solve issues and meet new requests. So if you have any problems, please put issues to us.
+
+# Citation
+Please cite our paper if you use DeepKE in your work
+
+```bibtex
+@article{Zhang_DeepKE_A_Deep_2022,
+author = {Zhang, Ningyu and Xu, Xin and Tao, Liankuan and Yu, Haiyang and Ye, Hongbin and Xie, Xin and Chen, Xiang and Li, Zhoubo and Li, Lei and Liang, Xiaozhuan and Yao, Yunzhi and Deng, Shumin and Zhang, Zhenru and Tan, Chuanqi and Huang, Fei and Zheng, Guozhou and Chen, Huajun},
+journal = {http://arxiv.org/abs/2201.03335},
+title = {{DeepKE: A Deep Learning Based Knowledge Extraction Toolkit for Knowledge Base Population}},
+year = {2022}
+}
+```
 # Developers
 
 Zhejiang University: Ningyu Zhang, Liankuan Tao, Haiyang Yu, Xiang Chen, Xin Xu, Xi Tian, Lei Li, Zhoubo Li, Shumin Deng, Yunzhi Yao, Hongbin Ye, Xin Xie, Guozhou Zheng, Huajun Chen
 
-DAMO Academy: Chuanqi Tan, Fei Huang
+DAMO Academy: Zhenru Zhang, Chuanqi Tan, Fei Huang
